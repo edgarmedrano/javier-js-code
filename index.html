@@ -1,0 +1,88 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<!------------------------------------------------------------------------
+  File:        JScript.js
+  Description: JAVIER Browser HTML version
+  Author:      Edgar Medrano Pérez 
+               edgarmedrano at gmail dot com
+  Created:     2007.03.26
+  Company:     JAVIER project
+               http://javier.sourceforge.net
+  Notes:       
+------------------------------------------------------------------------>
+<html>
+<head>
+<title>JAVIER: JAvascript Voicexml InterpretER</title>
+</head>
+<body>
+<script language="Javascript" src="lib/handlers.js"></script>
+<script language="Javascript" src="lib/javier.js"></script>
+<script language="Javascript"><!--
+var interpreter = new VXMLInterpreter
+	(new JSInHandler()
+	,new JSOutHandler()
+	,new NetHandler()
+	,new LogHandler()
+	,new ErrHandler()
+	);
+
+function jsSource() {
+	var viewSource = window.open("",'_blank').document;
+	
+	viewSource.writeln("<pre>")
+	viewSource.writeln(interpreter.js.replace(/</g,"&lt;").replace(/>/g,"&gt;"));
+	viewSource.writeln("</pre>")
+	viewSource.close();
+}
+
+function xmlSource() {
+	var viewSource = window.open("",'_blank').document;
+	
+	viewSource.writeln("<pre>")
+	viewSource.writeln(interpreter.text.replace(/</g,"&lt;").replace(/>/g,"&gt;"));
+	viewSource.writeln("</pre>")
+	viewSource.close();
+}
+//--></script>
+<SCRIPT FOR="window" EVENT="OnQuit()" LANGUAGE="JavaScript">
+	// Clean up voice object
+	delete TTSHandler;
+</SCRIPT>
+<form onsubmit="return false;">
+  Address: <input name="txtURL" value="default.xml" size="70">
+  <input value="Go" type="submit" onclick="interpreter.run(this.form.txtURL.value);"><br>
+  <input value="Home" type="submit" onclick="this.form.txtURL.value = this.form.txtURL.defaultValue; interpreter.run(this.form.txtURL.value);">
+  Bookmarks: 
+  <select onchange="this.form.txtURL.value = this.options[this.selectedIndex].value; interpreter.run(this.form.txtURL.value);">
+	<option value=""></option>
+	<option value="samples/hw.xml">Hello World!</option>
+	<option value="samples/hw2.xml">Hello World! 2</option>
+	<option value="samples/hw3.xml">Hello World! 3</option>
+	<option value="samples/hw4.xml">Hello World! 4</option>
+	<option value="samples/hw5.xml">Hello World! 5</option>
+	<option value="samples/credit.xml">Credit card</option>
+  </select>
+  <input value="VXML" type="submit" onclick="xmlSource(this.form)">
+  <input value="JS" type="submit" onclick="jsSource(this.form)">
+  <input value="autoEval" type="checkbox" onclick="interpreter.autoEval = this.checked;" checked="true"> Auto-run
+<script language="Javascript"><!--
+if(TTSHandler) {
+	var TTSVoices = TTSHandler.GetVoices();
+
+	document.writeln("<br>Voice: <select onchange='setVoice(this.options[this.selectedIndex].text)'>");
+	for(var i=0; i < TTSVoices.Count; i++) {
+		document.writeln("<option>" + TTSVoices.Item(i).GetDescription() + "</option>");
+	}
+	document.writeln("</select>");
+}
+//--></script>  
+</form>  
+<br>
+<form name="frmOut" onsubmit="return false;">
+  <textarea cols="80" rows="10" name="txtOut" onfocus="this.select()" style="font-family: Courier New"></textarea><br>
+</form>
+<form name="frmLog" onsubmit="return false;">
+  <textarea cols="80" rows="10" wrap="off" name="txtLog" onfocus="this.select()" style="font-family: Courier New"></textarea><br>
+  <input value="Clear" type="submit" onclick="this.form.txtLog.value='';">
+</form>
+</body>
+</html>

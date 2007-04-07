@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<vxml version="2.0" xmlns="http://www.w3.org/2001/vxml" 
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+  xsi:schemaLocation="http://www.w3.org/2001/vxml 
+   http://www.w3.org/TR/voicexml20/vxml.xsd">
+<form id="weather_info">
+ <block>Welcome to the weather information service.</block>
+ <field name="state">
+  <prompt>What state?</prompt>
+  <grammar src="state.grxml"  type="application/srgs+xml"/>
+  <catch event="help">
+     Please speak the state for which you want the weather.
+  </catch>
+ </field>
+ <field name="city">
+  <prompt>What city?</prompt>
+  <grammar src="city.grxml" type="application/srgs+xml"/>
+  <catch event="help">
+     Please speak the city for which you want the weather.
+  </catch>
+ </field>
+ <block>
+  <submit next="/servlet/weather" namelist="city state"/>
+ </block>
+</form>
+</vxml>

@@ -1,0 +1,1 @@
+call %~dp0\javier.wsh.bat http://localhost/javier/samples/%1.xml
