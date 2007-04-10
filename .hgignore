@@ -1,3 +1,4 @@
 syntax: glob
 *.log
 test.html
+sox.exe
