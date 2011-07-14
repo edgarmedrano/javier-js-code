@@ -27,13 +27,30 @@ var interpreter = new VXMLInterpreter
 
 function jsSource() {
 	var viewSource = window.open("",'_blank').document;
+	var lines = "<script>\nfunction document() {\n" 
+	   + interpreter.js.replace(/<\/script/g,"< / script") 
+	   + "\n}\n</script>";
+	
+	viewSource.writeln(lines);
+	lines = lines.replace(/</g,"&lt;").replace(/>/g,"&gt;").split("\n");
+	for(var i = 0; i < lines.length; i++) {
+		lines[i] = (i + 1) + "\t" + lines[i];
+	}
+	viewSource.writeln("<pre>")
+	viewSource.writeln(lines.join("\n"));
+	viewSource.writeln("</pre>")
+	viewSource.close();
+}
+/*	
+function jsSource() {
+	var viewSource = window.open("",'_blank').document;
 	
 	viewSource.writeln("<pre>")
 	viewSource.writeln(interpreter.js.replace(/</g,"&lt;").replace(/>/g,"&gt;"));
 	viewSource.writeln("</pre>")
 	viewSource.close();
 }
-
+*/
 function xmlSource() {
 	var viewSource = window.open("",'_blank').document;
 	
