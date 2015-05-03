@@ -13,7 +13,7 @@
 <head>
 <title>JAVIER: JAvascript Voicexml InterpretER</title>
 </head>
-<body>
+<body onload="loadVoices()">
 <script language="Javascript" src="lib/handlers.js"></script>
 <script language="Javascript" src="lib/javier.js"></script>
 <script language="Javascript"><!--
@@ -41,16 +41,7 @@ function jsSource() {
 	viewSource.writeln("</pre>")
 	viewSource.close();
 }
-/*	
-function jsSource() {
-	var viewSource = window.open("",'_blank').document;
-	
-	viewSource.writeln("<pre>")
-	viewSource.writeln(interpreter.js.replace(/</g,"&lt;").replace(/>/g,"&gt;"));
-	viewSource.writeln("</pre>")
-	viewSource.close();
-}
-*/
+
 function xmlSource() {
 	var viewSource = window.open("",'_blank').document;
 	
@@ -58,6 +49,33 @@ function xmlSource() {
 	viewSource.writeln(interpreter.text.replace(/</g,"&lt;").replace(/>/g,"&gt;"));
 	viewSource.writeln("</pre>")
 	viewSource.close();
+}
+
+function loadVoices() {
+	if(TTSHandler) {
+		if(document.getElementById) {
+			var TTSVoices = TTSHandler.GetVoices();
+			var htmlCode = "<br>Voice: <select onchange='setVoice(this.options[this.selectedIndex].text)'>";
+			for(var i=0; i < TTSVoices.Count; i++) {
+				htmlCode += "<option>" + TTSVoices.Item(i).GetDescription() + "</option>";
+			}
+			htmlCode += "</select>";
+			document.getElementById("combo").innerHTML = htmlCode;
+		}
+	} else {
+		if ("ActiveXObject" in window) {
+			alert("To enable Text to Speech, add the page address to a secure zone " + 
+				"in the 'Security' tab of 'Internet options' dialog " +
+				"and set 'Initialize and script ActiveX controls not marked as safe'" +
+				" to 'Prompt'");
+		}
+	}
+}
+
+if ("speechSynthesis" in window) {
+	window.speechSynthesis.onvoiceschanged = function (e) {
+		loadVoices();
+	};
 }
 //--></script>
 <SCRIPT FOR="window" EVENT="OnQuit()" LANGUAGE="JavaScript">
@@ -81,17 +99,7 @@ function xmlSource() {
   <input value="VXML" type="submit" onclick="xmlSource(this.form)">
   <input value="JS" type="submit" onclick="jsSource(this.form)">
   <input value="autoEval" type="checkbox" onclick="interpreter.autoEval = this.checked;" checked="true"> Auto-run
-<script language="Javascript"><!--
-if(TTSHandler) {
-	var TTSVoices = TTSHandler.GetVoices();
-
-	document.writeln("<br>Voice: <select onchange='setVoice(this.options[this.selectedIndex].text)'>");
-	for(var i=0; i < TTSVoices.Count; i++) {
-		document.writeln("<option>" + TTSVoices.Item(i).GetDescription() + "</option>");
-	}
-	document.writeln("</select>");
-}
-//--></script>  
+  <div id="combo"></div>  
 </form>  
 <br>
 <form name="frmOut" onsubmit="return false;">
