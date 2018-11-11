@@ -1,5 +1,5 @@
 # JAvascript Voicexml InterpretER 
-### This is the JavaScript implementation, if you're looking for the Java version take a look at [javier-java-code](https://github.com/edgarmedrano/javier-java-code)
+### This is the JavaScript implementation, if you're looking for the Java implementation take a look at [javier-java-code](https://github.com/edgarmedrano/javier-java-code)
 
 To know more about JAVIER, please visit (http://javier.sourceforge.net/getstart.html).
 
